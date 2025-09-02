@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Base / tokens === */
+@layer base {
+  :root {
+    --radius: 1rem;
+    color-scheme: light dark; /* mejor contraste en inputs/scrollbars */
+  }
+  ::selection { @apply bg-brand/20; }
+}
+
+/* === Componentes personalizados === */
+@layer components {
+  .card {
+    @apply rounded-2xl shadow p-6 bg-white/80 dark:bg-neutral-900/80 
+           border border-neutral-200/60 dark:border-neutral-800;
+  }
+  .card-hover {
+    @apply transition hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-xl font-medium 
+           border border-neutral-300 dark:border-neutral-700 
+           px-4 py-2 transition hover:opacity-90
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60
+           focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900
+           active:translate-y-[1px];
+  }
+  .btn-primary { @apply btn bg-brand text-white border-brand; }
+  .btn-ghost   { @apply btn bg-transparent hover:bg-black/5 dark:hover:bg-white/10; }
+  .btn-outline { @apply btn bg-transparent text-brand border-brand hover:bg-brand/10; }
+  .btn-sm      { @apply btn px-3 py-1.5 text-sm; }
+  .btn-lg      { @apply btn px-5 py-3 text-base; }
+
+  .badge, .chip {
+    @apply inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full
+           border border-neutral-200/60 dark:border-neutral-800;
+  }
+
+  .glass {
+    @apply bg-white/60 dark:bg-neutral-900/60 backdrop-blur
+           border border-white/20 dark:border-white/10 rounded-2xl;
+  }
+}
+
+/* === Animaciones === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.animate-fadeUp { animation: fadeUp .6s ease both; }
+
+/* Skeleton shimmer para cargas */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  @apply relative overflow-hidden bg-neutral-200 dark:bg-neutral-800;
+}
+.skeleton::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+/* === Utilidades extra === */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Texto con gradiente (para titulares) */
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-tr from-brand to-sky-400;
+  }
+  /* Container queries: aplica @container en wrappers para layouts adaptativos por card */
+  .cq { container-type: inline-size; }
+}
+
+/* Respeta “reduced motion” del usuario */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
